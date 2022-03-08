@@ -6,18 +6,21 @@ import { ProjectManagementModule } from './project-management/project-management
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReportModule } from './report/report.module';
 import { ReportTemplateModule } from './report-template/report-template.module';
+import ORMConfig from '../ormconfig'
+
+// {
+//   type: 'mysql',
+//   host: 'localhost',
+//   port: 3306,
+//   username: 'root',
+//   password: 'password',
+//   database: 'hitachi_vantara_report',
+//   entities: ["dist/**/entities/*.entity{.ts,.js}"],
+//   synchronize : true
+// }
 @Module({
   imports: [ 
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'password',
-      database: 'hitachi_vantara_report',
-      entities: ["dist/**/entities/*.entity{.ts,.js}"],
-      synchronize : true
-    })
+    TypeOrmModule.forRoot(ORMConfig)
     
     ,
     UserModule, ProjectManagementModule, ReportModule, ReportTemplateModule],
