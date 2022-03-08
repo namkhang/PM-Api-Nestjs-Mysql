@@ -7,10 +7,9 @@ const ORMConfig  : TypeOrmModuleOptions  =  {
   username: 'root',
   password: 'password',
   database: 'hitachi_vantara_report',
-  entities: ["dist/**/entities/*.entity{.ts,.js}"],
+  entities: ["dist/**/entities/*.entity{.js,.ts}"],
   migrations: [
-    "src/migrations/*.ts",
-    "dist/migrations/*{.ts,.js}"
+    "dist/src/migrations/*{.js,.ts}"
   ],
 cli: {
   "migrationsDir": "src/migrations"

@@ -13,7 +13,7 @@
     "migrate:generate": "npm run build && npm run typeorm migration:generate -- -n",
     "migrate:run": "npm run build && npm run typeorm migration:run",
     "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
-    "start": "nest start",
+    "start": "npm run build && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
