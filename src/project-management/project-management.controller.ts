@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProjectManagementService } from './project-management.service';
 import { CreateProjectManagementDto } from './dto/create-project-management.dto';
 import { UpdateProjectManagementDto } from './dto/update-project-management.dto';
@@ -18,6 +18,11 @@ export class ProjectManagementController {
   @Get()
   findAll() {
     return this.projectManagementService.findAll();
+  }
+
+  @Get('/search')
+  search(@Query('query') query : string) {
+    return this.projectManagementService.search(query);
   }
 
   @Get(':id')

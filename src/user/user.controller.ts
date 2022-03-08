@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,6 +21,11 @@ export class UserController {
   @Get('/find')
   find() {
     return this.userService.find();
+  }
+
+  @Get('/searchUser')
+  searchUser(@Query('query') query : string) {
+    return this.userService.searchUser(query);
   }
 
   @Get()

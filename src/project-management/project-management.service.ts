@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository , InjectConnection } from '@nestjs/typeorm';
+import { Repository , Connection } from 'typeorm';
 import { CreateProjectManagementDto } from './dto/create-project-management.dto';
 import { UpdateProjectManagementDto } from './dto/update-project-management.dto';
 import { ProjectManagement } from './entities/project-management.entity';
@@ -10,10 +10,13 @@ export class ProjectManagementService {
 
 
   
-  constructor(@InjectRepository(ProjectManagement) private projectRepo : Repository<ProjectManagement>){}
+  constructor(@InjectRepository(ProjectManagement) private projectRepo : Repository<ProjectManagement> , @InjectConnection() private readonly connection: Connection){}
 
-  create(createProjectManagementDto: CreateProjectManagementDto) {
-    return 'This action adds a new projectManagement';
+  async create(createProjectManagementDto: CreateProjectManagementDto) {
+    return {
+      success : true ,
+      data : await this.projectRepo.save({...createProjectManagementDto})
+    }
   }
 
   async findAll() {
@@ -23,15 +26,32 @@ export class ProjectManagementService {
     return result
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectManagement`;
+  async findOne(id: number) {
+    return {
+      success : true ,
+      data : await this.projectRepo.findOne({id})
+    }
+
   }
 
-  update(id: number, updateProjectManagementDto: UpdateProjectManagementDto) {
-    return `This action updates a #${id} projectManagement`;
+  async search(query : string){
+    return {
+      success : true ,
+      data : await this.connection.query(`SELECT * FROM project_management WHERE project_name LIKE '%${query}%'`)
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectManagement`;
+  async update(id: number, updateProjectManagementDto: UpdateProjectManagementDto) {
+    return {
+      success : true ,
+      data : await this.projectRepo.update({id} , {...updateProjectManagementDto})
+    }
+  }
+
+  async remove(id: number) {
+    await this.projectRepo.delete({id})
+    return {
+      sucess : true
+    }
   }
 }

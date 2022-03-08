@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -9,7 +9,7 @@ import { User } from './entities/user.entity';
 export class UserService {
 
 
-  constructor(@InjectRepository(User) private userRepo : Repository<User>){}
+  constructor(@InjectRepository(User) private userRepo : Repository<User> , @InjectConnection() private readonly connection: Connection){}
 
 
   async create(createUserDto: CreateUserDto) {
@@ -17,6 +17,16 @@ export class UserService {
       success : true ,
       data : await this.userRepo.save({...createUserDto})
     }
+  }
+
+  async searchUser(query :string){
+    // let data  = await this.connection.query(`SELECT * FROM user WHERE fullname LIKE '%${query}%'`)
+    let data  = await this.userRepo.createQueryBuilder('user').where(`user.fullname like '%${query}%'`).select('user.fullname').addSelect('user.username').addSelect('user.is_admin').getMany()
+               
+      return {
+        success : true ,
+        data 
+      }
   }
 
   async findAll() {

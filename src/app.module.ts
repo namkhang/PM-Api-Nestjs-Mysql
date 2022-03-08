@@ -6,7 +6,6 @@ import { ProjectManagementModule } from './project-management/project-management
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReportModule } from './report/report.module';
 import { ReportTemplateModule } from './report-template/report-template.module';
-
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -14,10 +13,10 @@ import { ReportTemplateModule } from './report-template/report-template.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'locked1641999',
+      password: 'password',
       database: 'hitachi_vantara_report',
       entities: ["dist/**/entities/*.entity{.ts,.js}"],
-      synchronize: true,
+      synchronize : true
     })
     
     ,
