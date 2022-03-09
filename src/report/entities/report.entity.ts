@@ -20,7 +20,7 @@ export class Report {
   report_data: any;
 
   @Column()
-  user_id: string;
+  user_id: number;
 
   @Column({nullable : true})
   create_at: string;

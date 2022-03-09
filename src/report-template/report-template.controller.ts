@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ReportTemplateService } from './report-template.service';
 import { CreateReportTemplateDto } from './dto/create-report-template.dto';
 import { UpdateReportTemplateDto } from './dto/update-report-template.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('ReportTemplate')
@@ -11,8 +11,10 @@ export class ReportTemplateController {
   constructor(private readonly reportTemplateService: ReportTemplateService) {}
 
   @Post()
-  create(@Body() createReportTemplateDto: CreateReportTemplateDto) {
-    return this.reportTemplateService.create(createReportTemplateDto);
+  @ApiOkResponse({description : 'Created'})
+  @ApiBody({type : CreateReportTemplateDto})
+  create(@Body() createReportTemplate: any) {
+    return this.reportTemplateService.create(createReportTemplate);
   }
 
   @Get()
@@ -26,8 +28,10 @@ export class ReportTemplateController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReportTemplateDto: UpdateReportTemplateDto) {
-    return this.reportTemplateService.update(+id, updateReportTemplateDto);
+  @ApiOkResponse({description : 'Created'})
+  @ApiBody({type : UpdateReportTemplateDto})
+  update(@Param('id') id: string, @Body() updateReportTemplate: any) {
+    return this.reportTemplateService.update(+id, updateReportTemplate);
   }
 
   @Delete(':id')

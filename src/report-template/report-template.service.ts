@@ -1,39 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateReportTemplateDto } from './dto/create-report-template.dto';
 import { UpdateReportTemplateDto } from './dto/update-report-template.dto';
 import { ReportTemplate } from './entities/report-template.entity';
 
 @Injectable()
 export class ReportTemplateService {
-
-
   
-  constructor(@InjectRepository(ReportTemplate) private userRepo : Repository<ReportTemplate>){}
+  constructor(@InjectRepository(ReportTemplate) private reportTemplateRepo : Repository<ReportTemplate>){}
 
-  create(createReportTemplateDto: CreateReportTemplateDto) {
-    return 'This action adds a new reportTemplate';
+  async create(createReportTemplate: any) {
+    createReportTemplate.field = createReportTemplate.field.join(',')
+    return {
+      success : true ,
+      data : await this.reportTemplateRepo.save(createReportTemplate)
+    }
   }
 
 
   async findAll() {
-    const query = this.userRepo.createQueryBuilder('report_template')
+    const query = this.reportTemplateRepo.createQueryBuilder('report_template')
     .innerJoinAndSelect('report_template.listReport' , 'report_template_id')
     const result = await query.getMany();
     return result
   }
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} reportTemplate`;
+  async findOne(id: number) {
+    return {
+      success : true ,
+      data : await this.reportTemplateRepo.findOne({id})
+    }
   }
 
-  update(id: number, updateReportTemplateDto: UpdateReportTemplateDto) {
-    return `This action updates a #${id} reportTemplate`;
+  async update(id: number, updateReportTemplate: any) {
+    updateReportTemplate.field = updateReportTemplate.field.join(',')
+    return {
+      success : true ,
+      data : await this.reportTemplateRepo.update({id} , {...updateReportTemplate})
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reportTemplate`;
+  async remove(id: number) {
+    await this.reportTemplateRepo.delete({id})
+    return {
+      success : true
+    }
   }
 }

@@ -10,15 +10,18 @@ export class ReportService {
 
 
   
-  constructor(@InjectRepository(Report) private userRepo : Repository<Report>){}
+  constructor(@InjectRepository(Report) private reportRepo : Repository<Report>){}
 
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
+  async create(createReportDto: CreateReportDto) {
+    return {
+      success : true ,
+      data : await this.reportRepo.save(createReportDto)
+    }
   }
 
 
   async findAll() {
-    const query = this.userRepo.createQueryBuilder('report')
+    const query = this.reportRepo.createQueryBuilder('report')
     .innerJoinAndSelect('report.projectInfor' , 'idProject')
     .innerJoinAndSelect('report.userInfor' , 'idUser')
     .innerJoinAndSelect('report.reportTemplateInfor' , 'idReportTemplate')
@@ -26,16 +29,34 @@ export class ReportService {
     return result
   }
 
-
-  findOne(id: number) {
-    return `This action returns a #${id} report`;
+  async search(query : string){
+     const data =  await this.reportRepo.find()
+     const result = data.filter(i => i.report_data.name.toLowerCase().includes(query.toLowerCase()))
+     return {
+       success : true ,
+       data : result
+     }
   }
 
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return `This action updates a #${id} report`;
+
+  async findOne(id: number) {
+    return {
+      success : true ,
+      data : await this.reportRepo.findOne({id})
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} report`;
+  async update(id: number, updateReportDto: UpdateReportDto) {
+    return {
+      success : true ,
+      data : await this.reportRepo.update({id} , {...updateReportDto})
+    }
+  }
+
+  async remove(id: number) {
+    await this.reportRepo.delete({id})
+    return {
+      success : true 
+    }
   }
 }
