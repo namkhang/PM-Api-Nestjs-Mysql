@@ -19,6 +19,8 @@ export class UserService {
     }
   }
 
+
+
   async searchUser(query :string){
     // let data  = await this.connection.query(`SELECT * FROM user WHERE fullname LIKE '%${query}%'`)
     let data  = await this.userRepo.createQueryBuilder('user').where(`user.fullname like '%${query}%'`).select('user.fullname').addSelect('user.username').addSelect('user.is_admin').getMany()

@@ -27,6 +27,11 @@ export class ReportController {
     return this.reportService.search(query);
   }
 
+  @Get('/test-transaction')
+  testTransaction() {
+    return this.reportService.testTransaction();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reportService.findOne(+id);

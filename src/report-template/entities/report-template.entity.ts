@@ -1,5 +1,5 @@
 import { Report } from 'src/report/entities/report.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('report_template')
 export class ReportTemplate {

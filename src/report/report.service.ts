@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './entities/report.entity';
@@ -10,13 +10,78 @@ export class ReportService {
 
 
   
-  constructor(@InjectRepository(Report) private reportRepo : Repository<Report>){}
+  constructor(@InjectRepository(Report) private reportRepo : Repository<Report> , @InjectConnection() private readonly connection: Connection){}
 
   async create(createReportDto: CreateReportDto) {
     return {
       success : true ,
       data : await this.reportRepo.save(createReportDto)
     }
+  }
+
+
+  async testTransaction(){
+    const data = [
+      {
+        project_id: 1,
+        report_template_id: 1,
+        report_data: {
+          name : 'no'
+        } ,
+        user_id: 1 ,
+        create_at: 'string'
+      },
+      {
+        project_id: 2,
+        report_template_id: 2,
+        report_data: {
+          name : 'no'
+        } ,
+        user_id: 2 ,
+        create_at: 'string'
+      },
+      {
+        project_id: 2,
+        report_template_id: 2,
+        report_data: {
+          name : 'no'
+        } ,
+        user_id: 2 ,
+        create_at: 'string'
+      }
+
+    ].map(data => {
+      const report = new Report();
+      Object.assign(report, data);
+      return report;
+    })
+
+
+    const queryRunner = this.connection.createQueryRunner()
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+    try{
+       for (let i = 0 ; i< data.length ; i++){
+        // await queryRunner.manager.save(data[i])
+        await queryRunner.manager.insert(Report , data[i])
+       }
+       await queryRunner.commitTransaction()
+       return {
+         success : true
+       }
+          
+    }
+    catch (err){   
+      
+      await queryRunner.rollbackTransaction()
+      return {
+        success : false
+      }
+    }
+    finally{
+      await queryRunner.release()
+    }
+
   }
 
 
