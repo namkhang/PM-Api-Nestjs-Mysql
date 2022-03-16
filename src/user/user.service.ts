@@ -19,6 +19,17 @@ export class UserService {
     }
   }
 
+  async sort(field : string , type : string){
+    const order = {}
+    order[field] = type
+    return {
+      success : true,
+      data : await this.userRepo.find({
+          order
+      })
+    }
+  }
+
 
 
   async searchUser(query :string){
@@ -42,7 +53,10 @@ export class UserService {
       return {
         success: true ,
         data : await this.userRepo.find({
-          select  : ['id' , 'fullname' , 'username']
+          select  : ['id' , 'fullname' , 'username'],
+          where : {
+            is_admin : 1
+          }
         })
       }
   }

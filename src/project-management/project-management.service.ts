@@ -20,16 +20,35 @@ export class ProjectManagementService {
   }
 
   async findAll() {
-    const query = this.projectRepo.createQueryBuilder('project_management')
-    .innerJoinAndSelect('project_management.userInfor' , 'id');
-    const result = await query.getMany();
+    // const query = this.projectRepo.createQueryBuilder('project_management')
+    // .innerJoinAndSelect('project_management.userInfor' , 'id');
+    // const result = await query.getMany();
+
+    const result = await this.projectRepo.find({
+      join : {
+        alias : 'project' ,
+        innerJoinAndSelect : {
+          user : 'project.userInfor'
+        }
+      }
+    })
     return result
   }
 
   async findOne(id: number) {
+    let data  = await this.projectRepo.findOne({id} ,{
+      join : {
+        alias : 'project',
+        innerJoinAndSelect : {
+          user : 'project.userInfor'
+        }
+    
+      }
+  })
+    
     return {
       success : true ,
-      data : await this.projectRepo.findOne({id})
+      data : data
     }
 
   }

@@ -23,6 +23,12 @@ export class UserController {
     return this.userService.find();
   }
 
+
+  @Get('/sort')
+  sort(@Query('field') field : string , @Query('type') type : string) {
+    return this.userService.sort(field , type);
+  }
+
   @Get('/searchUser')
   searchUser(@Query('query') query : string) {
     return this.userService.searchUser(query);
