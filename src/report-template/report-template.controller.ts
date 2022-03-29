@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ReportTemplateService } from './report-template.service';
 import { CreateReportTemplateDto } from './dto/create-report-template.dto';
 import { UpdateReportTemplateDto } from './dto/update-report-template.dto';
@@ -20,6 +20,11 @@ export class ReportTemplateController {
   @Get()
   findAll() {
     return this.reportTemplateService.findAll();
+  }
+
+  @Get('/search')
+  search(@Query('query') query : string) {
+    return this.reportTemplateService.search(query);
   }
 
   @Get(':id')

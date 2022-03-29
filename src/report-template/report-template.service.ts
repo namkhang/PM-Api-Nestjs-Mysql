@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { UpdateReportTemplateDto } from './dto/update-report-template.dto';
 import { ReportTemplate } from './entities/report-template.entity';
 
@@ -23,6 +23,18 @@ export class ReportTemplateService {
     .innerJoinAndSelect('report_template.listReport' , 'report_template_id')
     const result = await query.getMany();
     return result
+  }
+
+
+  async search(query : string){
+        return {
+          success : true ,
+          data : await this.reportTemplateRepo.find({
+            where : {
+                  report_name :  Like(`%${query}%`)
+            }
+          })
+        }
   }
 
 
