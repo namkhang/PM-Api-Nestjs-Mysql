@@ -15,7 +15,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     return {
       success : true ,
-      data : await this.userRepo.save({...createUserDto})
+      data : await this.userRepo.insert(createUserDto)
     }
   }
 
@@ -43,9 +43,12 @@ export class UserService {
   }
 
   async findAll() {
-    const query = this.userRepo.createQueryBuilder('user')
-    .innerJoinAndSelect('user.listProject' , 'project_lead_id');
-    const result = await query.getMany();
+    // const query = this.userRepo.createQueryBuilder('user')
+    // .innerJoinAndSelect('user.listProject' , 'project_lead_id');
+    // const result = await query.getMany();
+    const result = await this.userRepo.find()
+    console.log('dung');
+    
     return result
   }
 
