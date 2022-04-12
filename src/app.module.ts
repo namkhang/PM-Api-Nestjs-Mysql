@@ -6,6 +6,7 @@ import { ProjectManagementModule } from './project-management/project-management
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReportModule } from './report/report.module';
 import { ReportTemplateModule } from './report-template/report-template.module';
+import { TaskModule } from './task/task.module';
 import ORMConfig from '../ormconfig'
 
 // {
@@ -23,7 +24,7 @@ import ORMConfig from '../ormconfig'
     TypeOrmModule.forRoot(ORMConfig)
     
     ,
-    UserModule, ProjectManagementModule, ReportModule, ReportTemplateModule],
+    UserModule, ProjectManagementModule, ReportModule, ReportTemplateModule, TaskModule],
   controllers: [AppController],
   providers: [AppService],
 })

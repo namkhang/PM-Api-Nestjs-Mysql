@@ -1,5 +1,6 @@
 import { ProjectManagement } from 'src/project-management/entities/project-management.entity';
 import { Report } from 'src/report/entities/report.entity';
+import { Task } from 'src/task/entities/task.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('user')
@@ -30,6 +31,9 @@ export class User {
 
   @OneToMany((type) => Report , report => report.userInfor)
   listReport : Array<Report>
+
+  @OneToMany((type) => Task , task => task.userInfor)
+  listTask : Array<Task>
 
 
 }

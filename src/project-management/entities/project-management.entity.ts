@@ -1,3 +1,4 @@
+import { Task } from 'src/task/entities/task.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, ManyToOne, JoinColumn } from 'typeorm';
 
@@ -36,6 +37,9 @@ export class ProjectManagement {
   @ManyToOne((type) => User , user => user.id)
   @JoinColumn({ name: 'project_lead_id'})
   userInfor : User
+
+  @OneToMany((type) => Task , task => task.projectInfor)
+  listTask : Array<Task>
 
 
 }
